@@ -1,0 +1,89 @@
+main:
+	irmovq	$stack, %rsp
+	irmovq	$data, %rdi
+	irmovq	$size, %rsi
+	mrmovq	0(%rsi), %rsi
+	call	smooth
+	halt
+
+smooth:
+        irmovq  $8, %rcx 
+        mulq %rcx, %rsi
+        irmovq  $4, %rbx
+        subq %rcx, %rsi
+        subq %rcx, %rsi
+        mrmovq 0(%rdi), %r12
+        addq %rcx, %rdi
+        mrmovq 0(%rdi), %r13
+        addq %rcx, %rdi
+        mrmovq 0(%rdi), %r14
+        
+ 
+loop:  
+        andq %rsi, %rsi
+        jle done
+        addq %r13, %r12
+        addq %r13, %r12
+        rrmovq %r14, %r13
+        addq %r14, %r12
+        addq %rcx, %rdi
+        divq %rbx, %r12
+        rmmovq %r12, -16(%rdi)
+        mrmovq 0(%rdi), %r14
+        subq %rcx, %rsi
+        jmp loop
+
+done:
+	ret
+
+
+# Array with 32 elements
+.pos	0x2000
+size:
+.quad	32
+data:
+.quad	11
+.quad	12
+.quad	10
+.quad	5
+.quad	1
+.quad	8
+.quad	15
+.quad	0
+.quad	1
+.quad	8
+.quad	13
+.quad	5
+.quad	6
+.quad	5
+.quad	9
+.quad	12
+.quad	4
+.quad	15
+.quad	5
+.quad	14
+.quad	15
+.quad	2
+.quad	7
+.quad	16
+.quad	13
+.quad	8
+.quad	15
+.quad	1
+.quad	14
+.quad	11
+.quad	0
+.quad	8
+
+.pos 0x5000
+stack:
+
+
+
+
+
+
+
+
+
+    
